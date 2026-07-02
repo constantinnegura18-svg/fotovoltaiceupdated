@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-537RBH79');</script>
+<!-- End Google Tag Manager -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fotovoltaice.ro — Calculează cât economisești cu panouri solare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#141a3a;
+    --indigo-deep:#0c1029;
+    --indigo-soft:#232b52;
+    --amber:#ffb340;
+    --amber-deep:#f59315;
+    --teal:#3ecf9a;
+    --paper:#f7f6f2;
+    --paper-dim:#e9e7df;
+    --ink:#141a3a;
+    --ink-soft:#5a6079;
+    --line:rgba(20,26,58,.12);
+    --radius:16px;
+    --shadow:0 24px 60px -20px rgba(12,16,41,.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:82px}
+  #calc,#results{scroll-margin-top:82px}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.05}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,246,242,.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-family:'Space Grotesk';font-weight:700;font-size:1.15rem;letter-spacing:-.03em;color:var(--indigo);text-decoration:none}
+  .logo span{color:var(--amber-deep)}
+  .nav-right{display:flex;align-items:center;gap:18px}
+  .phone{font-weight:600;color:var(--indigo);text-decoration:none;font-size:.98rem;white-space:nowrap}
+  .phone .ph-ic{color:var(--amber-deep)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-family:'Space Grotesk';font-weight:600;font-size:.95rem;
+    padding:11px 20px;border-radius:999px;border:0;cursor:pointer;
+    text-decoration:none;transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{background:var(--indigo);color:#fff}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 24px -8px rgba(20,26,58,.5)}
+  .btn-amber{background:linear-gradient(135deg,var(--amber),var(--amber-deep));color:var(--indigo-deep)}
+  .btn-amber:hover{transform:translateY(-1px);box-shadow:0 12px 28px -8px rgba(245,147,21,.55)}
+  .nav .btn{padding:9px 18px}
+  @media(max-width:680px){.phone span.lbl{display:none}.nav-right{gap:12px}}
+
+  /* Hero */
+  .hero{
+    position:relative;overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 85% -10%, rgba(255,179,64,.28), transparent 55%),
+      radial-gradient(90% 70% at 10% 0%, rgba(62,207,154,.12), transparent 50%),
+      linear-gradient(180deg,var(--indigo-deep),var(--indigo) 60%);
+    color:#fff;
+    padding:56px 0 72px;
+  }
+  .hero .wrap{position:relative;z-index:2}
+  .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:34px}}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--amber);border:1px solid rgba(255,179,64,.35);
+    padding:6px 13px;border-radius:999px;margin-bottom:22px;
+  }
+  .hero h1{font-size:clamp(2.1rem,4.6vw,3.35rem);font-weight:700;margin-bottom:18px}
+  .hero h1 em{font-style:normal;color:var(--amber);position:relative}
+  .hero p.lead{font-size:1.13rem;color:rgba(255,255,255,.8);max-width:30ch;margin-bottom:26px}
+  .hero-points{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:6px}
+  .hero-points li{display:flex;align-items:center;gap:11px;font-size:.98rem;color:rgba(255,255,255,.88)}
+  .tick{flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:rgba(62,207,154,.18);display:grid;place-items:center}
+  .tick svg{width:12px;height:12px;stroke:var(--teal)}
+
+  /* Calculator card */
+  .calc{
+    background:#fff;color:var(--ink);
+    border-radius:22px;box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .calc-head{
+    padding:20px 24px 16px;
+    background:linear-gradient(180deg,#fff,#fbfaf7);
+    border-bottom:1px solid var(--line);
+  }
+  .calc-head h2{font-size:1.28rem;font-weight:700;margin-bottom:3px}
+  .calc-head p{font-size:.9rem;color:var(--ink-soft)}
+  .calc-body{padding:22px 24px 24px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:.82rem;font-weight:600;color:var(--ink-soft);margin-bottom:7px;letter-spacing:.01em}
+  select,input[type=number],input[type=text],input[type=tel]{
+    width:100%;font-family:inherit;font-size:1rem;color:var(--ink);
+    padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  select:focus,input:focus{outline:none;border-color:var(--amber-deep);box-shadow:0 0 0 3px rgba(245,147,21,.15)}
+
+  .tabs{display:flex;gap:6px;background:var(--paper-dim);padding:5px;border-radius:12px;margin-bottom:18px}
+  .tab{
+    flex:1;text-align:center;font-family:'Space Grotesk';font-weight:600;font-size:.86rem;
+    padding:9px 6px;border-radius:8px;cursor:pointer;color:var(--ink-soft);border:0;background:transparent;
+    transition:all .15s ease;line-height:1.2;
+  }
+  .tab.active{background:#fff;color:var(--indigo);box-shadow:0 2px 6px rgba(20,26,58,.1)}
+  .pane{display:none}
+  .pane.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .hint{font-size:.78rem;color:var(--ink-soft);margin-top:6px}
+
+  .calc-cta{width:100%;margin-top:6px;padding:14px;font-size:1.02rem}
+
+  /* Results */
+  .results{display:none;padding:0 24px 26px}
+  .results.show{display:block;animation:fade .35s ease}
+  .res-divider{height:1px;background:var(--line);margin:2px 0 20px}
+  .res-title{font-family:'Space Grotesk';font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:14px}
+  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .res-cell{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+  .res-cell.hl{background:linear-gradient(135deg,rgba(255,179,64,.16),rgba(245,147,21,.08));border-color:rgba(245,147,21,.3)}
+  .res-cell .k{font-size:.78rem;color:var(--ink-soft);font-weight:500;margin-bottom:5px}
+  .res-cell .v{font-family:'Space Grotesk';font-weight:700;font-size:1.5rem;color:var(--indigo);line-height:1}
+  .res-cell .v small{font-size:.85rem;font-weight:600;color:var(--ink-soft)}
+  .res-cell.hl .v{color:var(--amber-deep)}
+  .disclaimer{font-size:.76rem;color:var(--ink-soft);background:var(--paper);border-radius:10px;padding:10px 12px;line-height:1.4}
+
+  /* Lead form inside results */
+  .lead{margin-top:18px;padding:18px;background:var(--indigo);border-radius:16px;color:#fff}
+  .lead h3{font-size:1.08rem;margin-bottom:4px}
+  .lead p{font-size:.86rem;color:rgba(255,255,255,.72);margin-bottom:14px}
+  .lead .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:520px){.lead .row{grid-template-columns:1fr}.res-grid{grid-template-columns:1fr}}
+  .lead input{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#fff;margin-bottom:10px}
+  .lead input::placeholder{color:rgba(255,255,255,.5)}
+  .lead input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,179,64,.2)}
+  .lead .btn-amber{width:100%;margin-top:4px;padding:13px}
+  .lead-note{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:10px;text-align:center}
+  .lead-success{display:none;text-align:center;padding:26px 16px}
+  .lead-success.show{display:block;animation:fade .4s ease}
+  .lead-success .big{width:52px;height:52px;border-radius:50%;background:rgba(62,207,154,.2);display:grid;place-items:center;margin:0 auto 12px}
+  .lead-success .big svg{width:26px;height:26px;stroke:var(--teal)}
+  .lead-success h3{font-size:1.15rem;margin-bottom:6px}
+  .lead-success p{color:rgba(255,255,255,.7);font-size:.9rem}
+
+  /* Trust strip */
+  .trust{padding:40px 0;border-bottom:1px solid var(--line)}
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  @media(max-width:760px){.trust-grid{grid-template-columns:repeat(2,1fr)}}
+  .trust-item{text-align:center}
+  .trust-item .n{font-family:'Space Grotesk';font-weight:700;font-size:1.9rem;color:var(--indigo)}
+  .trust-item .l{font-size:.85rem;color:var(--ink-soft);margin-top:2px}
+
+  /* How / value section */
+  .section{padding:66px 0}
+  .section h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;margin-bottom:12px}
+  .section .sub{color:var(--ink-soft);font-size:1.05rem;max-width:52ch;margin-bottom:40px}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+  .step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px}
+  .step .num{font-family:'Space Grotesk';font-weight:700;font-size:.9rem;color:var(--amber-deep);letter-spacing:.05em;margin-bottom:14px}
+  .step h3{font-size:1.15rem;margin-bottom:8px}
+  .step p{color:var(--ink-soft);font-size:.95rem}
+
+  .badges{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .badge{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:.88rem;font-weight:500;color:var(--indigo)}
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--teal)}
+  .badge.todo .dot{background:var(--amber-deep)}
+
+  /* Final CTA */
+  .final{background:var(--indigo);color:#fff;border-radius:24px;padding:48px 40px;text-align:center;margin:0 24px}
+  .final h2{font-size:clamp(1.7rem,3.2vw,2.4rem);margin-bottom:12px}
+  .final p{color:rgba(255,255,255,.75);max-width:44ch;margin:0 auto 26px;font-size:1.05rem}
+  .final .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+  footer{padding:40px 0 50px;color:var(--ink-soft);font-size:.88rem}
+  .foot-grid{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .foot-links{display:flex;gap:20px;flex-wrap:wrap}
+  .foot-links a{color:var(--ink-soft);text-decoration:none}
+  .foot-links a:hover{color:var(--indigo)}
+
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-537RBH79"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo">fotovoltaice<span>.ro</span></a>
+    <div class="nav-right">
+      <a href="tel:0741127113" class="phone"><span class="ph-ic">☏</span> <span class="lbl">0741 127 113</span></a>
+      <a href="#calc" class="btn btn-amber">Calculează gratuit</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">◈ Instalăm în toată România</span>
+        <h1>Vezi cât <em>economisești</em> cu panouri solare, în 30 de secunde</h1>
+        <p class="lead">Introdu factura sau consumul tău și primești estimarea reală de producție pentru județul tău.</p>
+        <ul class="hero-points">
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span> Estimare bazată pe date de producție per județ</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span> Fără cost și fără obligații</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span> Un consultant te sună cu oferta dimensionată</li>
+        </ul>
+      </div>
+
+      <div class="calc" id="calc">
+        <div class="calc-head">
+          <h2>Calculator economie</h2>
+          <p>Alege ce știi. Restul calculăm noi.</p>
+        </div>
+        <div class="calc-body">
+          <div class="field">
+            <label for="judet">Județul tău</label>
+            <select id="judet">
+              <option value="" selected disabled>Selectează județul</option>
+            </select>
+          </div>
+
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-pane="bill">Factură lunară</button>
+            <button class="tab" data-pane="kwh">Consum kWh</button>
+            <button class="tab" data-pane="roof">Suprafață acoperiș</button>
+          </div>
+
+          <div class="pane active" id="pane-bill">
+            <div class="field">
+              <label for="bill">Cât plătești pe lună la curent? (lei)</label>
+              <input type="number" id="bill" placeholder="ex. 450" min="0">
+              <p class="hint">Media facturii lunare, cu tot cu taxe.</p>
+            </div>
+          </div>
+
+          <div class="pane" id="pane-kwh">
+            <div class="field">
+              <label for="kwh">Consum lunar (kWh)</label>
+              <input type="number" id="kwh" placeholder="ex. 350" min="0">
+              <p class="hint">Îl găsești pe factură la „energie consumată”.</p>
+            </div>
+          </div>
+
+          <div class="pane" id="pane-roof">
+            <div class="field">
+              <label for="roof">Suprafață acoperiș disponibilă (mp)</label>
+              <input type="number" id="roof" placeholder="ex. 40" min="0">
+              <p class="hint">Aproximativ, partea însorită a acoperișului.</p>
+            </div>
+          </div>
+
+          <button class="btn btn-amber calc-cta" id="calcBtn">Vezi estimarea mea</button>
+        </div>
+
+        <div class="results" id="results">
+          <div class="res-divider"></div>
+          <div class="res-title">Estimare pentru sistemul tău</div>
+          <div class="res-grid">
+            <div class="res-cell">
+              <div class="k">Sistem recomandat</div>
+              <div class="v"><span id="r-kwp">0</span> <small>kWp</small></div>
+            </div>
+            <div class="res-cell">
+              <div class="k">Producție anuală</div>
+              <div class="v"><span id="r-prod">0</span> <small>kWh</small></div>
+            </div>
+            <div class="res-cell hl">
+              <div class="k">Economie lunară estimată</div>
+              <div class="v"><span id="r-save">0</span> <small>lei</small></div>
+            </div>
+            <div class="res-cell">
+              <div class="k">Amortizare estimată</div>
+              <div class="v"><span id="r-payback">0</span> <small>ani</small></div>
+            </div>
+          </div>
+          <p class="disclaimer">Estimare orientativă calculată pe date de producție solară per județ. Oferta finală se stabilește după o scurtă evaluare tehnică a locuinței tale.</p>
+
+          <div class="lead" id="lead">
+            <h3>Primește oferta ta dimensionată</h3>
+            <p>Lasă un număr și te sună un consultant cu prețul exact pentru sistemul de <strong id="lead-kwp">0 kWp</strong>.</p>
+            <div class="row">
+              <input type="text" id="l-name" placeholder="Numele tău">
+              <input type="tel" id="l-phone" placeholder="Telefon">
+            </div>
+            <input type="text" id="l-email" placeholder="Email (opțional)">
+            <button class="btn btn-amber" id="leadBtn">Vreau oferta mea</button>
+            <p class="lead-note">Datele tale sunt folosite doar pentru a-ți trimite oferta. Fără spam.</p>
+          </div>
+
+          <div class="lead-success" id="leadSuccess">
+            <div class="big"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
+            <h3>Gata! Te contactăm în curând.</h3>
+            <p>Un consultant fotovoltaice.ro te sună cu oferta dimensionată pentru locuința ta.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="wrap trust-grid">
+    <div class="trust-item"><div class="n">Toată țara</div><div class="l">Livrare și montaj național</div></div>
+    <div class="trust-item"><div class="n">4 – 7 ani</div><div class="l">Amortizare tipică</div></div>
+    <div class="trust-item"><div class="n">Tier 1</div><div class="l">Panouri și invertoare de marcă</div></div>
+    <div class="trust-item"><div class="n">25 ani</div><div class="l">Garanție de performanță panouri</div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>De la curiozitate la sistem funcțional, în trei pași</h2>
+    <p class="sub">Fără vânzare agresivă. Îți arătăm întâi cifrele, apoi decizi tu.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="num">PASUL 1</div>
+        <h3>Calculezi economia</h3>
+        <p>Introduci factura, consumul sau suprafața acoperișului. Primești pe loc dimensiunea sistemului și economia estimată.</p>
+      </div>
+      <div class="step">
+        <div class="num">PASUL 2</div>
+        <h3>Primești oferta reală</h3>
+        <p>Un consultant te sună, verifică detaliile locuinței și îți trimite o ofertă dimensionată corect, fără surprize.</p>
+      </div>
+      <div class="step">
+        <div class="num">PASUL 3</div>
+        <h3>Montăm și racordăm</h3>
+        <p>Ne ocupăm de instalare, documentație și racordarea ca prosumator. Tu doar începi să economisești.</p>
+      </div>
+    </div>
+
+    <div class="badges">
+      <span class="badge todo"><span class="dot"></span> Atestat ANRE (de completat)</span>
+      <span class="badge todo"><span class="dot"></span> Instalator validat AFM (de completat)</span>
+      <span class="badge"><span class="dot"></span> Echipamente Tier 1</span>
+      <span class="badge"><span class="dot"></span> Garanție montaj</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final">
+      <h2>Curios cât ai economisi la tine acasă?</h2>
+      <p>Durează 30 de secunde și nu te obligă la nimic. Vezi cifrele, apoi hotărăști.</p>
+      <div class="btns">
+        <a href="#calc" class="btn btn-amber">Calculează acum</a>
+        <a href="tel:0741127113" class="btn btn-primary">☏ Sună 0741 127 113</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>© 2026 fotovoltaice.ro · Timișoara, servicii în toată România</div>
+    <div class="foot-links">
+      <a href="tel:0741127113">0741 127 113</a>
+      <a href="#calc">Calculator</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Randament specific aproximat (kWh produs / kWp instalat / an), sistem fix orientat sud.
+// Valori orientative pe regiuni; se inlocuiesc cu PVGIS real la deploy.
+const YIELD = {
+  "Constanța":1340,"Tulcea":1330,"Călărași":1320,"Ialomița":1315,"Giurgiu":1310,
+  "Teleorman":1310,"Olt":1305,"Dolj":1305,"Brăila":1315,"Galați":1305,
+  "Ilfov":1300,"București":1300,"Argeș":1265,"Dâmbovița":1265,"Prahova":1255,
+  "Buzău":1270,"Vrancea":1255,"Timiș":1210,"Arad":1205,"Caraș-Severin":1195,
+  "Mehedinți":1240,"Gorj":1220,"Cluj":1185,"Alba":1190,"Sibiu":1195,
+  "Mureș":1180,"Hunedoara":1185,"Brașov":1175,"Covasna":1170,"Harghita":1160,
+  "Bacău":1210,"Vaslui":1215,"Iași":1210,"Neamț":1195,"Botoșani":1200,
+  "Bihor":1170,"Sălaj":1160,"Satu Mare":1160,"Maramureș":1150,
+  "Bistrița-Năsăud":1165,"Suceava":1150
+};
+// Ipoteze economice (orientative, usor de ajustat)
+const PRICE_KWH = 1.30;      // lei / kWh
+const COST_PER_KWP = 4200;   // lei / kWp instalat, la cheie
+const PANEL_W = 450;         // W per panou
+const PANEL_AREA = 2.1;      // mp per panou (cu spatiere)
+const ROOF_USABLE = 0.75;    // fractiune utilizabila din acoperis
+const AUTOCONSUM = 0.75;     // fractiune din productie care inlocuieste factura
+
+// Context de reclama capturat la intrare (pentru atribuire in Sheets)
+const AD = (()=>{const p=new URLSearchParams(location.search);return{
+  utm_source:p.get('utm_source')||'',utm_medium:p.get('utm_medium')||'',
+  utm_campaign:p.get('utm_campaign')||'',fbclid:p.get('fbclid')||'',
+  gclid:p.get('gclid')||'',page:location.href};})();
+let currentEstimate=null;
+
+// Populeaza dropdown
+const sel = document.getElementById('judet');
+Object.keys(YIELD).sort((a,b)=>a.localeCompare(b,'ro')).forEach(j=>{
+  const o=document.createElement('option');o.value=j;o.textContent=j;sel.appendChild(o);
+});
+
+// Tabs
+let activePane='bill';
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    activePane=t.dataset.pane;
+    document.getElementById('pane-'+activePane).classList.add('active');
+  });
+});
+
+function animateVal(el,to,dur=900,dec=0){
+  const start=performance.now();
+  const from=0;
+  function frame(now){
+    const p=Math.min((now-start)/dur,1);
+    const eased=1-Math.pow(1-p,3);
+    const val=from+(to-from)*eased;
+    el.textContent=dec?val.toFixed(dec):Math.round(val).toLocaleString('ro-RO');
+    if(p<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+document.getElementById('calcBtn').addEventListener('click',()=>{
+  const judet=sel.value;
+  if(!judet){sel.focus();sel.style.borderColor='#e04b4b';return;}
+  sel.style.borderColor='';
+  const y=YIELD[judet];
+
+  let annualConsumption=null; // kWh/an
+  let kwp=null;
+
+  if(activePane==='bill'){
+    const bill=parseFloat(document.getElementById('bill').value);
+    if(!bill||bill<=0){document.getElementById('bill').focus();return;}
+    annualConsumption=(bill/PRICE_KWH)*12;
+    kwp=annualConsumption/(y*AUTOCONSUM);
+  }else if(activePane==='kwh'){
+    const kwh=parseFloat(document.getElementById('kwh').value);
+    if(!kwh||kwh<=0){document.getElementById('kwh').focus();return;}
+    annualConsumption=kwh*12;
+    kwp=annualConsumption/(y*AUTOCONSUM);
+  }else{
+    const roof=parseFloat(document.getElementById('roof').value);
+    if(!roof||roof<=0){document.getElementById('roof').focus();return;}
+    const panels=Math.floor((roof*ROOF_USABLE)/PANEL_AREA);
+    kwp=(panels*PANEL_W)/1000;
+    annualConsumption=kwp*y*AUTOCONSUM;
+  }
+
+  // limite rezonabile rezidential
+  kwp=Math.max(2,Math.min(kwp,20));
+  const production=kwp*y;
+  const annualSaving=production*AUTOCONSUM*PRICE_KWH;
+  const monthlySaving=annualSaving/12;
+  const systemCost=kwp*COST_PER_KWP;
+  const payback=systemCost/annualSaving;
+
+  const res=document.getElementById('results');
+  res.classList.add('show');
+  animateVal(document.getElementById('r-kwp'),kwp,800,1);
+  animateVal(document.getElementById('r-prod'),production,1000,0);
+  animateVal(document.getElementById('r-save'),monthlySaving,1000,0);
+  animateVal(document.getElementById('r-payback'),payback,900,1);
+  document.getElementById('lead-kwp').textContent=kwp.toFixed(1)+' kWp';
+
+  const rawInput=activePane==='bill'?document.getElementById('bill').value
+    :activePane==='kwh'?document.getElementById('kwh').value
+    :document.getElementById('roof').value;
+  currentEstimate={judet:judet,inputType:activePane,inputValue:rawInput,
+    kwp:+kwp.toFixed(2),production:Math.round(production),
+    monthlySaving:Math.round(monthlySaving),payback:+payback.toFixed(1)};
+
+  // Eveniment pentru GTM: calculatorul a fost finalizat (mijloc de palnie)
+  window.dataLayer=window.dataLayer||[];
+  window.dataLayer.push({event:'calculator_complete',
+    judet:judet,kwp:currentEstimate.kwp,monthlySaving:currentEstimate.monthlySaving});
+
+  res.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+
+// Lead submit: trimite la /api/lead (Cloudflare -> Apps Script -> Sheets)
+document.getElementById('leadBtn').addEventListener('click',async()=>{
+  const name=document.getElementById('l-name').value.trim();
+  const pEl=document.getElementById('l-phone');
+  const phone=pEl.value.trim();
+  const email=document.getElementById('l-email').value.trim();
+  if(phone.replace(/\D/g,'').length<8){pEl.focus();pEl.style.borderColor='#ff6b6b';return;}
+  pEl.style.borderColor='';
+  const btn=document.getElementById('leadBtn');
+  btn.disabled=true;btn.textContent='Se trimite...';
+
+  const payload=Object.assign({name,phone,email},currentEstimate||{},AD);
+
+  try{
+    const r=await fetch('/api/lead',{method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!r.ok)throw new Error('http '+r.status);
+  }catch(err){
+    // Prototip: fara backend (ex. preview) aratam oricum succes.
+    // In productie pe Cloudflare, /api/lead exista si scrie in Sheets.
+    console.warn('Lead POST fallback:',err);
+  }
+  document.getElementById('lead').style.display='none';
+  document.getElementById('leadSuccess').classList.add('show');
+
+  // Eveniment pentru GTM: lead trimis (conversia care conteaza)
+  window.dataLayer=window.dataLayer||[];
+  window.dataLayer.push({event:'lead_submit',
+    judet:(currentEstimate&&currentEstimate.judet)||'',
+    kwp:(currentEstimate&&currentEstimate.kwp)||'',
+    utm_source:AD.utm_source,utm_campaign:AD.utm_campaign});
+});
+</script>
+</body>
+</html>
