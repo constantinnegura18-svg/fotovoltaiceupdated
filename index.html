@@ -133,41 +133,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .calc-cta{width:100%;margin-top:6px;padding:14px;font-size:1.02rem}
 
-  /* Step 0 — qualifier (casa / bloc) */
-  .qualify{}
-  .qualify .q-label{display:block;font-family:'Space Grotesk';font-weight:600;font-size:1.02rem;color:var(--indigo);margin-bottom:4px}
-  .qualify .q-sub{font-size:.86rem;color:var(--ink-soft);margin-bottom:16px}
-  .q-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .q-choice{
-    display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;
-    padding:20px 14px;border:1.5px solid var(--line);border-radius:14px;background:#fff;
-    cursor:pointer;font-family:'Space Grotesk';font-weight:600;font-size:.98rem;color:var(--indigo);
-    transition:border-color .15s ease, transform .12s ease, box-shadow .15s ease;
-  }
-  .q-choice:hover{border-color:var(--amber-deep);transform:translateY(-2px);box-shadow:0 12px 24px -14px rgba(245,147,21,.5)}
-  .q-choice .q-ic{width:34px;height:34px;stroke:var(--amber-deep);fill:none;stroke-width:1.8}
-  .q-choice small{font-weight:500;font-size:.78rem;color:var(--ink-soft)}
-
-  /* Confirmed pill after choosing casa */
-  .q-confirmed{display:none;align-items:center;gap:10px;background:rgba(62,207,154,.1);border:1px solid rgba(62,207,154,.35);border-radius:12px;padding:11px 14px;margin-bottom:18px}
-  .q-confirmed.show{display:flex}
-  .q-confirmed .cf-ic{width:20px;height:20px;flex:0 0 20px;border-radius:50%;background:rgba(62,207,154,.2);display:grid;place-items:center}
-  .q-confirmed .cf-ic svg{width:11px;height:11px;stroke:var(--teal);stroke-width:3;fill:none}
-  .q-confirmed span{font-size:.86rem;color:var(--indigo);font-weight:500}
-  .q-confirmed a{margin-left:auto;font-size:.8rem;color:var(--ink-soft);text-decoration:underline;cursor:pointer;white-space:nowrap}
-
-  /* Bloc soft-stop message */
-  .block-msg{display:none;padding:22px 4px 6px;text-align:center}
-  .block-msg.show{display:block;animation:fade .3s ease}
-  .block-msg .bm-ic{width:46px;height:46px;border-radius:50%;background:var(--paper-dim);display:grid;place-items:center;margin:0 auto 14px}
-  .block-msg .bm-ic svg{width:24px;height:24px;stroke:var(--ink-soft);fill:none;stroke-width:1.8}
-  .block-msg h3{font-size:1.1rem;margin-bottom:8px;color:var(--indigo)}
-  .block-msg p{font-size:.92rem;color:var(--ink-soft);max-width:34ch;margin:0 auto 14px}
-  .block-msg a.back{font-size:.86rem;color:var(--amber-deep);font-weight:600;text-decoration:none;cursor:pointer}
-
-  #calc-main{display:none}
-  #calc-main.show{display:block;animation:fade .3s ease}
-
   /* Results */
   .results{display:none;padding:0 24px 26px}
   .results.show{display:block;animation:fade .35s ease}
@@ -276,7 +241,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <span class="eyebrow">◈ Panouri solare pentru casa ta</span>
+        <span class="eyebrow">◈ Panouri solare pentru locuința ta</span>
         <h1>Vezi cât <em>economisești</em> cu panouri solare, în 30 de secunde</h1>
         <p class="lead">Introdu factura sau consumul tău și primești estimarea reală de producție pentru județul tău.</p>
         <ul class="hero-points">
@@ -293,80 +258,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div class="calc-body">
 
-          <!-- STEP 0: calificare casă / bloc (un singur tap) -->
-          <div class="qualify" id="qualify">
-            <span class="q-label">Unde vrei să montezi panourile?</span>
-            <span class="q-sub">Panourile se montează pe acoperiș propriu — hai să vedem dacă e cazul tău.</span>
-            <div class="q-choices">
-              <button class="q-choice" id="q-casa" type="button">
-                <svg class="q-ic" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
-                Casă individuală
-                <small>Am acoperiș propriu</small>
-              </button>
-              <button class="q-choice" id="q-bloc" type="button">
-                <svg class="q-ic" viewBox="0 0 24 24"><path d="M4 21V4h9v17"/><path d="M13 21V9h7v12"/><path d="M7 8h2M7 12h2M7 16h2M16 13h1M16 17h1"/></svg>
-                Bloc / apartament
-                <small>Acoperiș comun</small>
-              </button>
-            </div>
+          <!-- Unde vrei sa instalezi (captura de date, totul la vedere) -->
+          <div class="field">
+            <label for="installType">Unde vrei să instalezi?</label>
+            <select id="installType">
+              <option value="" selected disabled>Alege tipul locuinței</option>
+              <option value="casa">Casă individuală</option>
+              <option value="duplex">Duplex / Triplex</option>
+              <option value="bloc">Bloc</option>
+            </select>
           </div>
 
-          <!-- confirmare după alegerea "casă" -->
-          <div class="q-confirmed" id="qConfirmed">
-            <span class="cf-ic"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></span>
-            <span>Casă individuală</span>
-            <a id="qReset">schimbă</a>
+          <div class="field">
+            <label for="judet">Județul tău</label>
+            <select id="judet">
+              <option value="" selected disabled>Selectează județul</option>
+            </select>
           </div>
 
-          <!-- mesaj pentru bloc / apartament -->
-          <div class="block-msg" id="blockMsg">
-            <div class="bm-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div>
-            <h3>Momentan lucrăm doar cu case individuale</h3>
-            <p>Panourile fotovoltaice au nevoie de un acoperiș propriu pentru a fi montate și racordate ca prosumator. Pentru apartamente la bloc nu putem oferi o soluție acum. Îți mulțumim de interes!</p>
-            <a class="back" id="blockBack">‹ Locuiesc totuși la casă</a>
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-pane="bill" type="button">Factură lunară</button>
+            <button class="tab" data-pane="kwh" type="button">Consum kWh</button>
           </div>
 
-          <!-- STEP 1: calculatorul propriu-zis -->
-          <div id="calc-main">
+          <div class="pane active" id="pane-bill">
             <div class="field">
-              <label for="judet">Județul tău</label>
-              <select id="judet">
-                <option value="" selected disabled>Selectează județul</option>
-              </select>
+              <label for="bill">Cât plătești pe lună la curent? (lei)</label>
+              <input type="number" id="bill" placeholder="ex. 450" min="0">
+              <p class="hint">Media facturii lunare, cu tot cu taxe.</p>
             </div>
-
-            <div class="tabs" role="tablist">
-              <button class="tab active" data-pane="bill" type="button">Factură lunară</button>
-              <button class="tab" data-pane="kwh" type="button">Consum kWh</button>
-              <button class="tab" data-pane="roof" type="button">Suprafață acoperiș</button>
-            </div>
-
-            <div class="pane active" id="pane-bill">
-              <div class="field">
-                <label for="bill">Cât plătești pe lună la curent? (lei)</label>
-                <input type="number" id="bill" placeholder="ex. 450" min="0">
-                <p class="hint">Media facturii lunare, cu tot cu taxe.</p>
-              </div>
-            </div>
-
-            <div class="pane" id="pane-kwh">
-              <div class="field">
-                <label for="kwh">Consum lunar (kWh)</label>
-                <input type="number" id="kwh" placeholder="ex. 350" min="0">
-                <p class="hint">Îl găsești pe factură la „energie consumată”.</p>
-              </div>
-            </div>
-
-            <div class="pane" id="pane-roof">
-              <div class="field">
-                <label for="roof">Suprafață acoperiș disponibilă (mp)</label>
-                <input type="number" id="roof" placeholder="ex. 40" min="0">
-                <p class="hint">Aproximativ, partea însorită a acoperișului.</p>
-              </div>
-            </div>
-
-            <button class="btn btn-amber calc-cta" id="calcBtn" type="button">Vezi estimarea mea</button>
           </div>
+
+          <div class="pane" id="pane-kwh">
+            <div class="field">
+              <label for="kwh">Consum lunar (kWh)</label>
+              <input type="number" id="kwh" placeholder="ex. 350" min="0">
+              <p class="hint">Îl găsești pe factură la „energie consumată”.</p>
+            </div>
+          </div>
+
+          <button class="btn btn-amber calc-cta" id="calcBtn" type="button">Vezi estimarea mea</button>
         </div>
 
         <div class="results" id="results">
@@ -448,7 +379,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="step">
         <div class="num">PASUL 1</div>
         <h3>Calculezi economia</h3>
-        <p>Introduci factura, consumul sau suprafața acoperișului. Primești pe loc dimensiunea sistemului și economia estimată.</p>
+        <p>Introduci factura lunară sau consumul în kWh. Primești pe loc dimensiunea sistemului și economia estimată.</p>
       </div>
       <div class="step">
         <div class="num">PASUL 2</div>
@@ -524,47 +455,11 @@ const AD = (()=>{const p=new URLSearchParams(location.search);return{
   utm_campaign:p.get('utm_campaign')||'',fbclid:p.get('fbclid')||'',
   gclid:p.get('gclid')||'',page:location.href};})();
 let currentEstimate=null;
-let housingType=null; // 'casa' cand trece de calificare
 
-// ---- STEP 0: calificare casa / bloc ----
-const qualifyEl   = document.getElementById('qualify');
-const qConfirmed  = document.getElementById('qConfirmed');
-const blockMsg    = document.getElementById('blockMsg');
-const calcMain    = document.getElementById('calc-main');
+// Tipul locuintei (captura de date, nu filtru): casa / duplex / bloc
+const installSel = document.getElementById('installType');
 
-function chooseCasa(){
-  housingType='casa';
-  qualifyEl.style.display='none';
-  blockMsg.classList.remove('show');
-  qConfirmed.classList.add('show');
-  calcMain.classList.add('show');
-  // Eveniment GTM: lead calificat (casa) — intra in palnie
-  window.dataLayer=window.dataLayer||[];
-  window.dataLayer.push({event:'qualify_house',housingType:'casa'});
-}
-function chooseBloc(){
-  housingType='bloc';
-  qualifyEl.style.display='none';
-  qConfirmed.classList.remove('show');
-  calcMain.classList.remove('show');
-  blockMsg.classList.add('show');
-  // Eveniment GTM: vizitator descalificat (bloc) — masori cat trafic e neeligibil
-  window.dataLayer=window.dataLayer||[];
-  window.dataLayer.push({event:'qualify_block',housingType:'bloc'});
-}
-function resetQualify(){
-  housingType=null;
-  qConfirmed.classList.remove('show');
-  blockMsg.classList.remove('show');
-  calcMain.classList.remove('show');
-  qualifyEl.style.display='';
-}
-document.getElementById('q-casa').addEventListener('click',chooseCasa);
-document.getElementById('q-bloc').addEventListener('click',chooseBloc);
-document.getElementById('qReset').addEventListener('click',resetQualify);
-document.getElementById('blockBack').addEventListener('click',chooseCasa);
-
-// Populeaza dropdown
+// Populeaza dropdown judete
 const sel = document.getElementById('judet');
 Object.keys(YIELD).sort((a,b)=>a.localeCompare(b,'ro')).forEach(j=>{
   const o=document.createElement('option');o.value=j;o.textContent=j;sel.appendChild(o);
@@ -596,6 +491,9 @@ function animateVal(el,to,dur=900,dec=0){
 }
 
 document.getElementById('calcBtn').addEventListener('click',()=>{
+  const installType=installSel.value;
+  if(!installType){installSel.focus();installSel.style.borderColor='#e04b4b';return;}
+  installSel.style.borderColor='';
   const judet=sel.value;
   if(!judet){sel.focus();sel.style.borderColor='#e04b4b';return;}
   sel.style.borderColor='';
@@ -609,17 +507,11 @@ document.getElementById('calcBtn').addEventListener('click',()=>{
     if(!bill||bill<=0){document.getElementById('bill').focus();return;}
     annualConsumption=(bill/PRICE_KWH)*12;
     kwp=annualConsumption/(y*AUTOCONSUM);
-  }else if(activePane==='kwh'){
+  }else{
     const kwh=parseFloat(document.getElementById('kwh').value);
     if(!kwh||kwh<=0){document.getElementById('kwh').focus();return;}
     annualConsumption=kwh*12;
     kwp=annualConsumption/(y*AUTOCONSUM);
-  }else{
-    const roof=parseFloat(document.getElementById('roof').value);
-    if(!roof||roof<=0){document.getElementById('roof').focus();return;}
-    const panels=Math.floor((roof*ROOF_USABLE)/PANEL_AREA);
-    kwp=(panels*PANEL_W)/1000;
-    annualConsumption=kwp*y*AUTOCONSUM;
   }
 
   // limite rezonabile rezidential
@@ -639,16 +531,15 @@ document.getElementById('calcBtn').addEventListener('click',()=>{
   document.getElementById('lead-kwp').textContent=kwp.toFixed(1)+' kWp';
 
   const rawInput=activePane==='bill'?document.getElementById('bill').value
-    :activePane==='kwh'?document.getElementById('kwh').value
-    :document.getElementById('roof').value;
-  currentEstimate={judet:judet,inputType:activePane,inputValue:rawInput,
+    :document.getElementById('kwh').value;
+  currentEstimate={judet:judet,installType:installType,inputType:activePane,inputValue:rawInput,
     kwp:+kwp.toFixed(2),production:Math.round(production),
     monthlySaving:Math.round(monthlySaving),payback:+payback.toFixed(1)};
 
   // Eveniment pentru GTM: calculatorul a fost finalizat (mijloc de palnie)
   window.dataLayer=window.dataLayer||[];
   window.dataLayer.push({event:'calculator_complete',
-    judet:judet,housingType:housingType,kwp:currentEstimate.kwp,monthlySaving:currentEstimate.monthlySaving});
+    judet:judet,installType:installType,kwp:currentEstimate.kwp,monthlySaving:currentEstimate.monthlySaving});
 
   res.scrollIntoView({behavior:'smooth',block:'nearest'});
 });
@@ -668,7 +559,8 @@ document.getElementById('leadBtn').addEventListener('click',async()=>{
   const btn=document.getElementById('leadBtn');
   btn.disabled=true;btn.textContent='Se trimite...';
 
-  const payload=Object.assign({name,phone,email,housingType:housingType||'casa',consent:true},currentEstimate||{},AD);
+  const installType=(currentEstimate&&currentEstimate.installType)||'';
+  const payload=Object.assign({name,phone,email,installType,consent:true},currentEstimate||{},AD);
 
   try{
     const r=await fetch('/api/lead',{method:'POST',
@@ -686,7 +578,7 @@ document.getElementById('leadBtn').addEventListener('click',async()=>{
   window.dataLayer=window.dataLayer||[];
   window.dataLayer.push({event:'lead_submit',
     judet:(currentEstimate&&currentEstimate.judet)||'',
-    housingType:housingType||'casa',
+    installType:installType,
     kwp:(currentEstimate&&currentEstimate.kwp)||'',
     utm_source:AD.utm_source,utm_campaign:AD.utm_campaign});
 });
